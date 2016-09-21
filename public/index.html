@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html ng-app='app'>
+<head lang="en">
+   <title>test</title>
+   <base href="/">
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+   <!--<script src="bower_components/modernizr/modernizr.js"></script>-->
+   <!--<base href="https://developer.mozilla.org/samples/cssref/">-->
+   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+   <link rel="stylesheet" href="bower_components/bootstrap/less/bootstrap.css">
+   <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css">
+   <link rel="stylesheet" href="less/test.css">
+   <script src="bower_components/lodash/dist/lodash.js"></script>
+   <script src="bower_components/jquery/dist/jquery.js"></script>
+   <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+   <script src="bower_components/angular/angular.js"></script>
+   <script src="bower_components/restangular/dist/restangular.js"></script>
+   <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+
+
+   <script>
+   </script>
+   <style>
+      /*body {margin:0px; padding:100px; }*/
+      .box { width: 100px; height: 100px; border: thin solid; float: left; }
+      .border { border: thin solid; }
+      .outline { outline: thin solid; outline-offset: -1px;}
+
+      div {
+         background-color: rgba(0,0,0,.1);
+         background-clip: content-box;
+      }
+
+   </style>
+</head>
+<body ng-controller="ctrl" class="container-fluid">
+<ui-view></ui-view>
+
+
+<script>
+   var app = angular.module('app', ['restangular', 'ui.router']);
+   app.run(function(Restangular, $state, $stateParams, $rootScope, $location) {
+      Restangular.setErrorInterceptor(function(response, deferred, responseHandler) {
+         console.log('error:', response)
+         return true;
+      });
+
+      $rootScope.$state = $state;
+      $rootScope.$stateParams = $stateParams;
+      $rootScope.$location = $location;
+      $rootScope.log = console.log.bind(console);
+
+      $rootScope.$on('$stateChangeError', function(event, to, top, from, fromp, error) {
+         console.log(error.stack);
+      })
+      $rootScope.$on('$stateChangeSuccess', function(event, to, top, from, fromp, error) {
+         console.log('>> ' + to.name);
+      })
+   })
+   app.config(function(RestangularProvider, $stateProvider, $urlRouterProvider, $locationProvider) {
+      RestangularProvider.setBaseUrl('http://localhost:3000/api');
+
+      $locationProvider.html5Mode(true);
+      $urlRouterProvider.otherwise('/')
+      $stateProvider
+         .state('home', {
+            url: '/'
+         })
+         .state('view1', {
+            url: '/view1baby',
+            template: 'fuckyou'
+         })
+
+   })
+
+   app.controller('ctrl', function ($scope, $state, $stateParams, Restangular) {
+
+      //$state.go('home');
+
+
+
+
+   })
+</script>
+</body>
+</html>

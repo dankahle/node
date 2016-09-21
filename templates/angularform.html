@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head lang="en">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0" />-->
+    <title></title>
+    <script src="js/angular.js"></script>
+</head>
+<body ng-controller="ctrl">
+index.html<br>
+
+<form ng-submit="submit()">
+    name: <input ng-model="user.name"><br>
+    age: <input ng-model="user.age"><br>
+    <input type="submit">
+</form>
+returned:
+<span ng-bind="val"></span>
+
+<script>
+    var app = angular.module('app', []);
+
+    app.controller('ctrl', function($scope, $http){
+
+        $scope.submit = function(){
+            $http.post('http://localhost:3000/api/user', $scope.user).success(function(data){
+                console.log('data:', data)
+                $scope.val = angular.toJson(data)
+            }).error(function(data){
+                console.log('error:', data)
+            })
+        }
+
+
+    })
+
+</script>
+</body>
+</html>
+

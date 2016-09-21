@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head lang="en">
+   <meta charset="UTF-8">
+   <!--<meta name="viewport" content="width=device-width, initial-scale=1.0" />-->
+   <title>angular</title>
+   <script src="bower_components/lodash/dist/lodash.min.js"></script>
+   <script src="bower_components/jquery/dist/jquery.min.js"></script>
+	<script src="bower_components/angular/angular.js"></script>
+   <style>
+   </style>
+</head>
+<body ng-controller="ctrl">
+main page entered
+
+<form ng-submit="submit()">
+	name: <input ng-model="user.name"><br>
+	age: <input ng-model="user.age"><br>
+	<input type="submit">
+</form>
+<hr>
+<div ng-repeat="user in users">{{user|json}}</div>
+
+
+<script>
+	var app = angular.module('app', []);
+	app.controller('ctrl', function($scope, $http){
+
+
+
+		$scope.submit = function() {
+			$http.post('/api/user', $scope.user).then(function(resp) {
+				$scope.users = resp.data;
+			})
+		}
+
+
+		$scope.click = function() {
+			$http.post('/').then(function(resp) {
+				$scope.rtn = resp.data;
+			})
+		}
+		$http.get('/api/user').then(function(resp) {
+			$scope.users = resp.data;
+		})
+
+	})
+</script>
+<script src="js/dkutil.js"></script>
+</body>
+</html>
